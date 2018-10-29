@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 type xkcd struct {
@@ -24,7 +25,9 @@ type xkcd struct {
 
 func main() {
 	var arrJSON []xkcd
-	for i := 1; i <= 10; i++ {
+	arg, _ := strconv.ParseInt(os.Args[1], 10, 64)
+	a := int(arg)
+	for i := 1; i <= a; i++ {
 		rJSON := new(xkcd)
 		url := fmt.Sprintf("https://xkcd.com/%d/info.0.json", i)
 		fmt.Printf("Getting URL : %s\n", url)
@@ -34,8 +37,8 @@ func main() {
 		}
 		arrJSON = append(arrJSON, *rJSON)
 	}
-	for i := 0; i < 10; i++ {
-		getImg(arrJSON[i].Link, string(i+1)+"_"+arrJSON[i].Title)
+	for i := 0; i < a; i++ {
+		getImg(arrJSON[i].Img, arrJSON[i].Title)
 	}
 }
 
